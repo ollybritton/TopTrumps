@@ -1,0 +1,46 @@
+{
+    "name": "Planets",
+    "traits": {
+        "temperature": "",
+        "wisdom": "",
+        "strength": ""
+    },
+
+    "cards": [{
+            "name": "Mercury",
+            "description": "",
+            "traits": {
+                "strength": 50,
+                "wisdom": 25,
+                "shield": 25
+            }
+        },
+        {
+            "name": "Card 2",
+            "description": "The second card.",
+            "traits": {
+                "strength": 25,
+                "wisdom": 50,
+                "shield": 25
+            }
+        },
+        {
+            "name": "Card 3",
+            "description": "The third card.",
+            "traits": {
+                "strength": 25,
+                "wisdom": 25,
+                "shield": 50
+            }
+        },
+        {
+            "name": "Card 4",
+            "description": "The fourth card.",
+            "traits": {
+                "strength": 40,
+                "wisdom": 30,
+                "shield": 30
+            }
+        }
+    ]
+}

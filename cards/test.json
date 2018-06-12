@@ -1,0 +1,46 @@
+{
+    "name": "Test File",
+    "traits": {
+        "shield": "A description of shield",
+        "wisdom": "A description of wisdom",
+        "strength": "A description of the strength"
+    },
+
+    "cards": [{
+            "name": "Card 1",
+            "description": "The first card that has a really really really really really really really really really really really really really really long name.",
+            "traits": {
+                "strength": 50,
+                "wisdom": 25,
+                "shield": 25
+            }
+        },
+        {
+            "name": "Card 2",
+            "description": "The second card.",
+            "traits": {
+                "strength": 25,
+                "wisdom": 50,
+                "shield": 25
+            }
+        },
+        {
+            "name": "Card 3",
+            "description": "The third card.",
+            "traits": {
+                "strength": 25,
+                "wisdom": 25,
+                "shield": 50
+            }
+        },
+        {
+            "name": "Card 4",
+            "description": "The fourth card.",
+            "traits": {
+                "strength": 40,
+                "wisdom": 30,
+                "shield": 30
+            }
+        }
+    ]
+}
