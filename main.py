@@ -11,10 +11,10 @@ from os import system, name
 
 # =========================
 
-CARD_PATH = "cards/planets.json"
+CARD_PATH = "cards/dnd.json"
 LOGO = ".------..------..------..------..------..------..------..------..------.\n|T.--. ||O.--. ||P.--. ||T.--. ||R.--. ||U.--. ||M.--. ||P.--. ||S.--. |\n| :/\: || :/\: || :/\: || :/\: || :(): || (\/) || (\/) || :/\: || :/\: |\n| (__) || :\/: || (__) || (__) || ()() || :\/: || :\/: || (__) || :\/: |\n| '--'T|| '--'O|| '--'P|| '--'T|| '--'R|| '--'U|| '--'M|| '--'P|| '--'S|\n`------'`------'`------'`------'`------'`------'`------'`------'`------'"
 
-TESTING = False
+TESTING = True
 
 # =========================
 
@@ -39,7 +39,11 @@ def clear():
 
     # for windows
     if name == 'nt':
-        _ = system('cls')
+        for i in range(100):
+            print("")
+
+        print("==========")
+        print("")
 
     # for mac and linux(here, os.name is 'posix')
     else:
@@ -117,8 +121,9 @@ def render_card(card):
 
     traits = "Traits:"
 
-    for trait in card.traits.keys():
-        traits += "\n - {}: {}".format(trait.title(), card.traits[trait])
+    for i in range(len(card.traits.keys())):
+        trait = list(card.traits.keys())[i]
+        traits += "\n- [{}] {}: {}".format(i + 1, trait.title(), card.traits[trait])
 
     print(name)
     print(description)
@@ -407,21 +412,26 @@ def main():
 
         render_card(CURRENT_PLAYER.cards[0])
 
-        avaliable_traits = card_data["traits"].keys()
+        avaliable_traits = list(card_data["traits"].keys())
 
         print("")
 
         print("Please select a quality to challenge them on:")
 
-        chosen_trait = input(">>> ").lower()
+        try:
+            chosen_trait = int(input(">>> ").lower())
 
-        if chosen_trait not in avaliable_traits:
+        except:
+            chosen_trait = float("infinity")
+
+        if chosen_trait not in list(range(1, len(avaliable_traits) + 1)):
             print("I'm sorry, I don't understand. Try again.")
             sleep(2)
 
             continue
 
         else:
+            chosen_trait = list(avaliable_traits)[chosen_trait - 1]
             input("Awesome. Let's see who wins. Press <ENTER> to continue. ")
 
             clear()
