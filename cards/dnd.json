@@ -1,0 +1,61 @@
+{
+    "name": "Planets",
+    "traits": {
+        "STRENGTH": "A depiction of how strong that creature is.",
+		"DEXTERITY": "How agile the character is.",
+		"CONSTITUTION": "How healthy the monster is.",
+		"INTELLIGENCE": "How smart it is.",
+		"WISDOM": "How wise it is.",
+		"CHARISMA": "How charismatic it is."
+    },
+
+    "cards": [{
+            "name": "Animated Armour",
+            "description": "A piece of armour that is magically enchanted and can move.",
+            "traits": {
+                "STRENGTH": 14,
+				"DEXTERITY": 11,
+				"CONSTITUTION": 13,
+				"INTELLIGENCE": 1,
+				"WISDOM": 3,
+				"CHARISMA": 1
+            }
+        },
+        {
+            "name": "Bugbear",
+            "description": "Like a big goblin thing.",
+            "traits": {
+                "STRENGTH": 15,
+				"DEXTERITY": 14,
+				"CONSTITUTION": 13,
+				"INTELLIGENCE": 8,
+				"WISDOM": 11,
+				"CHARISMA": 9
+            }
+        },
+		{
+            "name": "Quasit",
+            "description": "Buggy thing.",
+            "traits": {
+                "STRENGTH": 5,
+				"DEXTERITY": 17,
+				"CONSTITUTION": 10,
+				"INTELLIGENCE": 7,
+				"WISDOM": 10,
+				"CHARISMA": 10
+            }
+        },
+		{
+            "name": "Imp",
+            "description": "A tiny devil thing.",
+            "traits": {
+                "STRENGTH": 6,
+				"DEXTERITY": 17,
+				"CONSTITUTION": 13,
+				"INTELLIGENCE": 11,
+				"WISDOM": 12,
+				"CHARISMA": 14
+            }
+        }
+    ]
+}
