@@ -1,3 +1,8 @@
+# SCHOOL OLLY:
+# - Implement a regex search for the traits so they don't have to type it all.
+# - Make it so they can change the card file from inside the program.
+# - Add some DND characteters
+
 import json
 import random
 import time
@@ -6,10 +11,10 @@ from os import system, name
 
 # =========================
 
-CARD_PATH = "cards/test.json"
+CARD_PATH = "cards/planets.json"
 LOGO = ".------..------..------..------..------..------..------..------..------.\n|T.--. ||O.--. ||P.--. ||T.--. ||R.--. ||U.--. ||M.--. ||P.--. ||S.--. |\n| :/\: || :/\: || :/\: || :/\: || :(): || (\/) || (\/) || :/\: || :/\: |\n| (__) || :\/: || (__) || (__) || ()() || :\/: || :\/: || (__) || :\/: |\n| '--'T|| '--'O|| '--'P|| '--'T|| '--'R|| '--'U|| '--'M|| '--'P|| '--'S|\n`------'`------'`------'`------'`------'`------'`------'`------'`------'"
 
-TESTING = True
+TESTING = False
 
 # =========================
 
@@ -126,6 +131,12 @@ def compare(x, y):
     for trait in x.traits.keys():
         valueX = x.traits[trait]
         valueY = y.traits[trait]
+
+        if valueX == "n/a":
+            valueX = -float("infinity")
+
+        if valueY == "n/a":
+            valueY = -float("infinity")
 
         if valueX > valueY:
             result[trait] = x

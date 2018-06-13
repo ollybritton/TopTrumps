@@ -10,36 +10,117 @@
             "name": "Mercury",
             "description": "",
             "traits": {
-                "strength": 50,
-                "wisdom": 25,
-                "shield": 25
+                "Temperature (ºC)": 427,
+                "Distance from Sun (km)": 56900000,
+                "Diameter (km)": 4878,
+                "Gravity Compared to Earth": 0.38,
+                "Year of Discovery": 1885,
+                "Rotation Time (Earth Days)": 58.7,
+                "Orbit Time (Earth Days)": 88.0
             }
         },
         {
-            "name": "Card 2",
-            "description": "The second card.",
+            "name": "Venus",
+            "description": "",
             "traits": {
-                "strength": 25,
-                "wisdom": 50,
-                "shield": 25
+                "Temperature (ºC)": 482,
+                "Distance from Sun (km)": 108200000,
+                "Diameter (km)": 12104,
+                "Gravity Compared to Earth": 0.9,
+                "Year of Discovery": 1990,
+                "Rotation Time (Earth Days)": 243,
+                "Orbit Time (Earth Days)": 224.7
             }
         },
         {
-            "name": "Card 3",
-            "description": "The third card.",
+            "name": "Earth",
+            "description": "",
             "traits": {
-                "strength": 25,
-                "wisdom": 25,
-                "shield": 50
+                "Temperature (ºC)": 15,
+                "Distance from Sun (km)": 149600000,
+                "Diameter (km)": 12756,
+                "Gravity Compared to Earth": 1,
+                "Year of Discovery": "N/A",
+                "Rotation Time (Earth Days)": 1,
+                "Orbit Time (Earth Days)": 365.25
             }
         },
         {
-            "name": "Card 4",
-            "description": "The fourth card.",
+            "name": "Mars",
+            "description": "",
             "traits": {
-                "strength": 40,
-                "wisdom": 30,
-                "shield": 30
+                "Temperature (ºC)": -23,
+                "Distance from Sun (km)": 227900000,
+                "Diameter (km)": 6794,
+                "Gravity Compared to Earth": 0.38,
+                "Year of Discovery": 1580,
+                "Rotation Time (Earth Days)": 24.6,
+                "Orbit Time (Earth Days)": 687.0
+            }
+        },
+        {
+            "name": "Jupiter",
+            "description": "",
+            "traits": {
+                "Temperature (ºC)": -150,
+                "Distance from Sun (km)": 778000000,
+                "Diameter (km)": 1428000,
+                "Gravity Compared to Earth": 2.3,
+                "Year of Discovery": 1610,
+                "Rotation Time (Earth Days)": 0.41,
+                "Orbit Time (Earth Days)": 4332
+            }
+        },
+        {
+            "name": "Saturn",
+            "description": "",
+            "traits": {
+                "Temperature (ºC)": -180,
+                "Distance from Sun (km)": 1427000000,
+                "Diameter (km)": 120536,
+                "Gravity Compared to Earth": 1.16,
+                "Year of Discovery": -700,
+                "Rotation Time (Earth Days)": 0.42,
+                "Orbit Time (Earth Days)": 10760
+            }
+        },
+        {
+            "name": "Uranus",
+            "description": "",
+            "traits": {
+                "Temperature (ºC)": -214,
+                "Distance from Sun (km)": 287000000,
+                "Diameter (km)": 51118,
+                "Gravity Compared to Earth": 1.17,
+                "Year of Discovery": 1781,
+                "Rotation Time (Earth Days)": 0.75,
+                "Orbit Time (Earth Days)": 30700
+            }
+        },
+        {
+            "name": "Neptune",
+            "description": "",
+            "traits": {
+                "Temperature (ºC)": -220,
+                "Distance from Sun (km)": 2297000000,
+                "Diameter (km)": 50538,
+                "Gravity Compared to Earth": 1.77,
+                "Year of Discovery": 1846,
+                "Rotation Time (Earth Days)": 0.8,
+                "Orbit Time (Earth Days)": 60200
+            }
+        },
+        {
+            "name": "Pluto",
+            "description": "",
+            "traits": {
+                "Temperature (ºC)": -230,
+                "Distance from Sun (km)": 5900000000,
+                "Diameter (km)": 2324,
+                "Gravity Compared to Earth": 0.06,
+                "Year of Discovery": 1930,
+                "Rotation Time (Earth Days)": 6.39,
+                "Orbit Time (Earth Days)": 90600
             }
         }
     ]
