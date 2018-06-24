@@ -1,60 +1,168 @@
 {
-    "name": "Planets",
+    "name": "DnD Monsters",
     "traits": {
         "STRENGTH": "A depiction of how strong that creature is.",
-		"DEXTERITY": "How agile the character is.",
-		"CONSTITUTION": "How healthy the monster is.",
-		"INTELLIGENCE": "How smart it is.",
-		"WISDOM": "How wise it is.",
-		"CHARISMA": "How charismatic it is."
+        "DEXTERITY": "How agile the character is.",
+        "CONSTITUTION": "How healthy the monster is.",
+        "INTELLIGENCE": "How smart it is.",
+        "WISDOM": "How wise it is.",
+        "CHARISMA": "How charismatic it is."
     },
 
     "cards": [{
-            "name": "Animated Armour",
-            "description": "A piece of armour that is magically enchanted and can move.",
+            "name": "Aarakocra",
+            "description": "A bird-like creature from the elemental planes of air.",
             "traits": {
-                "STRENGTH": 14,
-				"DEXTERITY": 11,
-				"CONSTITUTION": 13,
-				"INTELLIGENCE": 1,
-				"WISDOM": 3,
-				"CHARISMA": 1
+                "STRENGTH": 10,
+                "DEXTERITY": 14,
+                "CONSTITUTION": 10,
+                "INTELLIGENCE": 11,
+                "WISDOM": 12,
+                "CHARISMA": 11
             }
         },
         {
-            "name": "Bugbear",
-            "description": "Like a big goblin thing.",
+            "name": "Acolyte",
+            "description": "A novice religous spell caster.",
+            "traits": {
+                "STRENGTH": 10,
+                "DEXTERITY": 10,
+                "CONSTITUTION": 10,
+                "INTELLIGENCE": 10,
+                "WISDOM": 14,
+                "CHARISMA": 11
+            }
+        },
+        {
+            "name": "Apprentice Wizard",
+            "description": "Um... an apprentice wizard.",
+            "traits": {
+                "STRENGTH": 10,
+                "DEXTERITY": 10,
+                "CONSTITUTION": 10,
+                "INTELLIGENCE": 14,
+                "WISDOM": 10,
+                "CHARISMA": 11
+            }
+        },
+        {
+            "name": "Axe Beak",
+            "description": "A flightless bird that likes pecking things.",
+            "traits": {
+                "STRENGTH": 14,
+                "DEXTERITY": 12,
+                "CONSTITUTION": 12,
+                "INTELLIGENCE": 2,
+                "WISDOM": 10,
+                "CHARISMA": 5
+            }
+        },
+        {
+            "name": "Blink Dog",
+            "description": "A dangerous teleporting dogo that likes to attack people.",
+            "traits": {
+                "STRENGTH": 12,
+                "DEXTERITY": 17,
+                "CONSTITUTION": 12,
+                "INTELLIGENCE": 10,
+                "WISDOM": 13,
+                "CHARISMA": 11
+            }
+        },
+        {
+            "name": "Boar",
+            "description": "A boar-ing boar creature.",
+            "traits": {
+                "STRENGTH": 13,
+                "DEXTERITY": 11,
+                "CONSTITUTION": 12,
+                "INTELLIGENCE": 2,
+                "WISDOM": 9,
+                "CHARISMA": 5
+            }
+        },
+        {
+            "name": "Broom of Animated Attack",
+            "description": "A magical broom that flies around and attacks things. Savage as it lacks morals.",
+            "traits": {
+                "STRENGTH": 10,
+                "DEXTERITY": 17,
+                "CONSTITUTION": 10,
+                "INTELLIGENCE": 1,
+                "WISDOM": 5,
+                "CHARISMA": 1
+            }
+        },
+        {
+            "name": "Bullywug",
+            "description": "Imagine a savage underwater frog that killed things.",
+            "traits": {
+                "STRENGTH": 12,
+                "DEXTERITY": 12,
+                "CONSTITUTION": 13,
+                "INTELLIGENCE": 7,
+                "WISDOM": 10,
+                "CHARISMA": 7
+            }
+        },
+        {
+            "name": "Constrictor Snake",
+            "description": "Hmmm... this one is hard to describe. It's kinda like a constricting snake.",
             "traits": {
                 "STRENGTH": 15,
-				"DEXTERITY": 14,
-				"CONSTITUTION": 13,
-				"INTELLIGENCE": 8,
-				"WISDOM": 11,
-				"CHARISMA": 9
+                "DEXTERITY": 14,
+                "CONSTITUTION": 12,
+                "INTELLIGENCE": 1,
+                "WISDOM": 10,
+                "CHARISMA": 3
             }
         },
-		{
-            "name": "Quasit",
-            "description": "Buggy thing.",
+        {
+            "name": "Cow",
+            "description": "A cow.",
             "traits": {
-                "STRENGTH": 5,
-				"DEXTERITY": 17,
-				"CONSTITUTION": 10,
-				"INTELLIGENCE": 7,
-				"WISDOM": 10,
-				"CHARISMA": 10
+                "STRENGTH": 18,
+                "DEXTERITY": 10,
+                "CONSTITUTION": 14,
+                "INTELLIGENCE": 2,
+                "WISDOM": 10,
+                "CHARISMA": 4
             }
         },
-		{
-            "name": "Imp",
-            "description": "A tiny devil thing.",
+        {
+            "name": "Deep Rothé",
+            "description": "A cow-like creature that lives in the underdark.",
             "traits": {
-                "STRENGTH": 6,
-				"DEXTERITY": 17,
-				"CONSTITUTION": 13,
-				"INTELLIGENCE": 11,
-				"WISDOM": 12,
-				"CHARISMA": 14
+                "STRENGTH": 10,
+                "DEXTERITY": 14,
+                "CONSTITUTION": 10,
+                "INTELLIGENCE": 111,
+                "WISDOM": 12,
+                "CHARISMA": 11
+            }
+        },
+        {
+            "name": "Derro",
+            "description": "A dravish-human mix of a creature that once inhabited the underdark.",
+            "traits": {
+                "STRENGTH": 9,
+                "DEXTERITY": 14,
+                "CONSTITUTION": 12,
+                "INTELLIGENCE": 11,
+                "WISDOM": 5,
+                "CHARISMA": 9
+            }
+        },
+        {
+            "name": "Dimetrodon",
+            "description": "A carnivorous dinosaur.",
+            "traits": {
+                "STRENGTH": 14,
+                "DEXTERITY": 10,
+                "CONSTITUTION": 15,
+                "INTELLIGENCE": 2,
+                "WISDOM": 10,
+                "CHARISMA": 5
             }
         }
     ]

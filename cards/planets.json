@@ -1,9 +1,13 @@
 {
     "name": "Planets",
     "traits": {
-        "temperature": "",
-        "wisdom": "",
-        "strength": ""
+        "Temperature (ºC)": "The amount of degrees that the planet is at.",
+        "Distance from Sun (km)": "How far the planet is from the sun.",
+        "Diameter (km)": "How wide the planet is, in kilometers.",
+        "Gravity Compared to Earth": "A measure of how strong or weak the gravity is.",
+        "Year of Discovery": "When the planet was discovered.",
+        "Rotation Time (Earth Days)": "How long it takes to do one full rotations (or how long a day is).",
+        "Orbit Time (Earth Days)": "How long it takes to go around the sun."
     },
 
     "cards": [{
