@@ -32,6 +32,3 @@ The files are in a `JSON` format, like so:
     ]
 }
 ```
-
-## FUTURE OLLY
-Add something where the user can change their pack of cards from within the game, without having to change the code itself.
