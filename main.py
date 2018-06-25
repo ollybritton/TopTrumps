@@ -71,7 +71,7 @@ DEFAULT_DELAY = [0.1, 0.2]
 DEFAULT_INPUT = False
 
 # Speeds up/slows down all wait times to make gameplay faster. 2 = twice as fast, 0.5 = double speed.
-SPEED_MODIFIER = 100
+SPEED_MODIFIER = 2
 
 # Defines wether to use the command prompt commands to clear the screen, or just print a bunch of times. Useful for when testing the code using IDLE. The first value is whether to do so, and the second value is the amount of times.
 CLEAR_PRINT = [False, 100]
@@ -375,9 +375,7 @@ def render_card(card):
     name = "Name: {}".format(card.name)
 
     if card.description != "":
-        description = "Description: {}\n".format(
-            "\n".join(chunks(card.description, 76))
-        )
+        description = "Description: {}".format(card.description)
 
     else:
         description = "Description: No description provided.\n"
@@ -623,9 +621,10 @@ def summarise(P1, P2, card_path):
     print("")
 
 
-def warning():
+def warning(P1, P2):
     print("WARNING:")
-    input("Whenever a screen comes up with the message: 'Avert your eyes, Player 1' or 'Avert your eyes, Player 2', the person it warns not to look should turn their head away or be prevented from looking at the next screen. ")
+    input("Whenever a screen comes up with the message: 'Avert your eyes, {}' or 'Avert your eyes, {}', the person it warns not to look should turn their head away or be prevented from looking at the next screen. ".format(
+        P1["name"], P2["name"]))
 
     print("")
 
@@ -662,10 +661,20 @@ def determine_starting(P1, P2):
     coin = ["heads", "tails"][random.randint(0, 1)]
 
     if coin == "heads":
-        print(HEAD_COIN)
+        for i in range(5):
+            clear()
+
+            if i % 2 == 0:
+                print(HEAD_COIN)
+
+            else:
+                print(TAILS_COIN)
+
+            wait_time = 1/(i+1)
+            sleep(wait_time)
 
         if P1["coin_choice"] == "heads":
-            print("")
+
             input("It was {}, so {} is starting! ".format(coin, P1["name"]))
 
             return P1
@@ -677,7 +686,17 @@ def determine_starting(P1, P2):
             return P2
 
     elif coin == "tails":
-        print(TAILS_COIN)
+        for i in range(6):
+            clear()
+
+            if i % 2 == 0:
+                print(HEAD_COIN)
+
+            else:
+                print(TAILS_COIN)
+
+            wait_time = 1/(i+1)
+            sleep(wait_time)
 
         if P1["coin_choice"] == "tails":
             print("")
@@ -708,534 +727,357 @@ def avert_eyes(player, clear_screen=True):
 
 
 def standard():
-    characters = create_characters()
+    play = "yes"
 
-    P1 = {"name": characters["P1"]}
-    P2 = {"name": characters["P2"]}
+    while play == "y" or play == "yes":
+        clear()
 
-    clear()
+        characters = create_characters()
 
-    card_path = card_choice()
+        P1 = {"name": characters["P1"]}
+        P2 = {"name": characters["P2"]}
 
-    clear()
+        clear()
 
-    summarise(P1, P2, card_path)
+        card_path = card_choice()
 
-    clear()
+        clear()
 
-    warning()
+        summarise(P1, P2, card_path)
 
-    clear()
+        clear()
 
-    # ========== GAMEPLAY INIT ==========
+        warning(P1, P2)
 
-    CARD_DATA = read_card_file("cards/{}".format(card_path))
-    CARD_ARR = shuffle(card_dict_to_card_array(CARD_DATA["cards"]))
+        clear()
 
-    PLAYER1 = Player(P1["name"], [])
-    PLAYER2 = Player(P2["name"], [])
+        # ========== GAMEPLAY INIT ==========
 
-    MIDDLE_CARDS = []
+        CARD_DATA = read_card_file("cards/{}".format(card_path))
+        CARD_ARR = shuffle(card_dict_to_card_array(CARD_DATA["cards"]))
 
-    if len(CARD_ARR) % 2 != 0:
-        MIDDLE_CARDS.append(CARD_ARR[0])
-        CARD_ARR = CARD_ARR[1:]
+        PLAYER1 = Player(P1["name"], [])
+        PLAYER2 = Player(P2["name"], [])
 
-    starting_player = determine_starting(P1, P2)
+        MIDDLE_CARDS = []
 
-    if starting_player == P1:
-        starting_player = PLAYER1
+        if len(CARD_ARR) % 2 != 0:
+            MIDDLE_CARDS.append(CARD_ARR[0])
+            CARD_ARR = CARD_ARR[1:]
 
-    if starting_player == P2:
-        starting_player = PLAYER2
+        starting_player = determine_starting(P1, P2)
 
-    PLAYER1.cards = CARD_ARR[:int(len(CARD_ARR)/2)]
-    PLAYER2.cards = CARD_ARR[int(len(CARD_ARR)/2):]
+        if starting_player == P1:
+            starting_player = PLAYER1
 
-    CURRENT_PLAYER = starting_player
-    OTHER_PLAYER = list(
-        filter(lambda x: x != CURRENT_PLAYER, [PLAYER1, PLAYER2])
-    )[0]
+        if starting_player == P2:
+            starting_player = PLAYER2
 
-    while not ((len(PLAYER1.cards) <= 0) or (len(PLAYER2.cards) <= 0)):
-        CURRENT_NAME = CURRENT_PLAYER.name
-        CURRENT_DECK = card_path_to_name(card_path)
+        PLAYER1.cards = CARD_ARR[:int(len(CARD_ARR)/2)]
+        PLAYER2.cards = CARD_ARR[int(len(CARD_ARR)/2):]
 
-        TOTAL_CARDS = len(card_dict_to_card_array(CARD_DATA["cards"]))
-        CURRENT_PLAYER_CARDS = len(CURRENT_PLAYER.cards)
+        CURRENT_PLAYER = starting_player
+        OTHER_PLAYER = list(
+            filter(lambda x: x != CURRENT_PLAYER, [PLAYER1, PLAYER2])
+        )[0]
 
-        CURRENT_PLAYER_CARD = CURRENT_PLAYER.cards[0]
+        while not ((len(PLAYER1.cards) <= 0) or (len(PLAYER2.cards) <= 0)):
+            CURRENT_NAME = CURRENT_PLAYER.name
+            CURRENT_DECK = card_path_to_name(card_path)
 
-        OTHER_NAME = OTHER_PLAYER.name
-        OTHER_PLAYER_CARDS = len(OTHER_PLAYER.cards)
+            TOTAL_CARDS = len(card_dict_to_card_array(CARD_DATA["cards"]))
+            CURRENT_PLAYER_CARDS = len(CURRENT_PLAYER.cards)
 
-        OTHER_PLAYER_CARD = OTHER_PLAYER.cards[0]
+            CURRENT_PLAYER_CARD = CURRENT_PLAYER.cards[0]
 
-        avert_eyes(OTHER_PLAYER)
+            OTHER_NAME = OTHER_PLAYER.name
+            OTHER_PLAYER_CARDS = len(OTHER_PLAYER.cards)
 
-        print("GAMEPLAY: {}'s Turn".format(CURRENT_NAME))
-        print("=" * len("GAMEPLAY: {}'s Turn".format(CURRENT_NAME)))
+            OTHER_PLAYER_CARD = OTHER_PLAYER.cards[0]
 
-        print("Info:")
-        print("-----")
+            avert_eyes(OTHER_PLAYER)
 
-        print("")
+            print("GAMEPLAY: {}'s Turn".format(CURRENT_NAME))
+            print("=" * len("GAMEPLAY: {}'s Turn".format(CURRENT_NAME)))
 
-        print("\t- Current Deck: {}".format(CURRENT_DECK))
-        print("\t- Total Cards: {}".format(TOTAL_CARDS))
+            print("Info:")
+            print("-----")
 
-        print("")
-
-        print("You:")
-        print("----")
-
-        print("\t- Cards You've Got: {} ({}%)".format(
-            len(CURRENT_PLAYER.cards), round(
-                (100.0 * CURRENT_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("\t- Cards They've Got: {} ({}%)".format(
-            len(OTHER_PLAYER.cards), round(
-                (100.0 * OTHER_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("")
-
-        print("\t- Cards in Middle: {} ({}%)".format(
-            len(MIDDLE_CARDS), round(
-                (100.0 * len(MIDDLE_CARDS))/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("")
-
-        print("Current Card:")
-        print("-------------")
-
-        print("")
-
-        render_card(CURRENT_PLAYER_CARD)
-
-        avaliable_traits = list(CARD_DATA["traits"].keys())
-
-        print("")
-
-        try:
-            chosen_trait = int(input("Please chose a trait >>> "))
-        except:
-            chosen_trait = None
-
-        while chosen_trait not in list(range(1, len(avaliable_traits) + 1)):
             print("")
-            print("Uh oh. I think you put something in wrong. Try again:")
+
+            print("\t- Current Deck: {}".format(CURRENT_DECK))
+            print("\t- Total Cards: {}".format(TOTAL_CARDS))
+
+            print("")
+
+            print("You:")
+            print("----")
+
+            print("\t- Cards You've Got: {} ({}%)".format(
+                len(CURRENT_PLAYER.cards), round(
+                    (100.0 * CURRENT_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
+                )/10
+            ))
+
+            print("\t- Cards They've Got: {} ({}%)".format(
+                len(OTHER_PLAYER.cards), round(
+                    (100.0 * OTHER_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
+                )/10
+            ))
+
+            print("")
+
+            print("\t- Cards in Middle: {} ({}%)".format(
+                len(MIDDLE_CARDS), round(
+                    (100.0 * len(MIDDLE_CARDS))/float(TOTAL_CARDS) * 10
+                )/10
+            ))
+
+            print("")
+
+            print("Current Card:")
+            print("-------------")
+
+            print("")
+
+            render_card(CURRENT_PLAYER_CARD)
+
+            avaliable_traits = list(CARD_DATA["traits"].keys())
+
+            print("")
 
             try:
                 chosen_trait = int(input("Please chose a trait >>> "))
             except:
                 chosen_trait = None
 
-        print("")
+            while chosen_trait not in list(range(1, len(avaliable_traits) + 1)):
+                print("")
+                print("Uh oh. I think you put something in wrong. Try again:")
 
-        chosen_trait = list(avaliable_traits)[chosen_trait - 1]
-        input("Ok, you've decided to go with '{}', with a value of {}. ".format(
-            chosen_trait, CURRENT_PLAYER_CARD.traits[chosen_trait]
-        ))
-
-        clear()
-
-        print("{} has decided to go with the trait called '{}'.".format(
-            CURRENT_NAME, chosen_trait))
-
-        input("{}, you are invited to look at your card, but you can't change anything. ".format(
-            OTHER_NAME))
-
-        print("")
-
-        avert_eyes(CURRENT_PLAYER, clear_screen=False)
-
-        print("GAMEPLAY: {}'s Turn".format(OTHER_NAME))
-        print("=" * len("GAMEPLAY: {}'s Turn".format(OTHER_NAME)))
-
-        print("Info:")
-        print("-----")
-
-        print("")
-
-        print("\t- Current Deck: {}".format(CURRENT_DECK))
-        print("\t- Total Cards: {}".format(TOTAL_CARDS))
-
-        print("")
-
-        print("You:")
-        print("----")
-
-        print("\t- Cards You've Got: {} ({}%)".format(
-            len(OTHER_PLAYER.cards), round(
-                (100.0 * OTHER_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("\t- Cards They've Got: {} ({}%)".format(
-            len(CURRENT_PLAYER.cards), round(
-                (100.0 * CURRENT_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("")
-
-        print("\t- Cards in Middle: {} ({}%)".format(
-            len(MIDDLE_CARDS), round(
-                (100.0 * len(MIDDLE_CARDS))/float(TOTAL_CARDS) * 10
-            )/10
-        ))
-
-        print("")
-
-        print("Current Card:")
-        print("-------------")
-
-        print("")
-
-        render_card(OTHER_PLAYER_CARD)
-
-        print("")
-
-        print("Out of these, remeber that {} went with '{}'.".format(
-            CURRENT_NAME, chosen_trait))
-
-        input("(Press <ENTER> when you're finished)")
-
-        clear()
-
-        print("THE COMPARISON:")
-        input("Ok, so {} chose the trait {}. ".format(
-            CURRENT_NAME, chosen_trait))
-
-        print()
-
-        input("{}'s Card's {}: {} ".format(CURRENT_NAME, chosen_trait,
-                                           CURRENT_PLAYER_CARD.traits[chosen_trait])
-              )
-
-        input("and...")
-
-        input("{}'s {} was... {} ".format(OTHER_NAME, chosen_trait,
-                                          OTHER_PLAYER_CARD.traits[chosen_trait]))
-
-        comparison = compare(
-            CURRENT_PLAYER.cards[0], OTHER_PLAYER.cards[0]
-        )
-
-        print("")
-
-        if comparison[chosen_trait] == CURRENT_PLAYER.cards[0]:
-            print("This means that {} has won this round!".format(
-                CURRENT_PLAYER.name))
-            print(
-                "For {}, they've lost... :(".format(OTHER_PLAYER.name))
+                try:
+                    chosen_trait = int(input("Please chose a trait >>> "))
+                except:
+                    chosen_trait = None
 
             print("")
 
-            print("This also means that {} stays on and gets to choose the next trait again!".format(
-                CURRENT_PLAYER.name))
+            chosen_trait = list(avaliable_traits)[chosen_trait - 1]
+            input("Ok, you've decided to go with '{}', with a value of {}. ".format(
+                chosen_trait, CURRENT_PLAYER_CARD.traits[chosen_trait]
+            ))
 
-            if CURRENT_PLAYER == PLAYER1:
-                PLAYER1.cards.append(PLAYER2.cards[0])
-                PLAYER2.cards = PLAYER2.cards[1:]
+            clear()
 
-                PLAYER1.cards.append(PLAYER1.cards[0])
-                PLAYER1.cards = PLAYER1.cards[1:]
+            print("{} has decided to go with the trait called '{}'.".format(
+                CURRENT_NAME, chosen_trait))
 
-                PLAYER1.cards += MIDDLE_CARDS
-                MIDDLE_CARDS = []
-
-                CURRENT_PLAYER = PLAYER1
-                OTHER_PLAYER = PLAYER2
-
-            elif CURRENT_PLAYER == PLAYER2:
-                PLAYER2.cards.append(PLAYER1.cards[0])
-                PLAYER1.cards = PLAYER1.cards[1:]
-
-                PLAYER2.cards.append(PLAYER2.cards[0])
-                PLAYER2.cards = PLAYER2.cards[1:]
-
-                PLAYER2.cards += MIDDLE_CARDS
-                MIDDLE_CARDS = []
-
-                CURRENT_PLAYER = PLAYER2
-                OTHER_PLAYER = PLAYER1
-
-            input("\nPress <ENTER> to continue.")
-
-        elif comparison[chosen_trait] == OTHER_PLAYER.cards[0]:
-            print("This means that {} won this time!".format(
-                OTHER_PLAYER.name))
-            print("This also means {} now gets to choose the trait!".format(
-                OTHER_PLAYER.name))
+            input("{}, you are invited to look at your card, but you can't change anything. ".format(
+                OTHER_NAME))
 
             print("")
 
-            if CURRENT_PLAYER == PLAYER1:
-                PLAYER2.cards.append(PLAYER1.cards[0])
-                PLAYER1.cards = PLAYER1.cards[1:]
+            avert_eyes(CURRENT_PLAYER, clear_screen=False)
 
-                PLAYER2.cards.append(PLAYER2.cards[0])
-                PLAYER2.cards = PLAYER2.cards[1:]
+            print("GAMEPLAY: {}'s Turn".format(OTHER_NAME))
+            print("=" * len("GAMEPLAY: {}'s Turn".format(OTHER_NAME)))
 
-                PLAYER2.cards += MIDDLE_CARDS
-                MIDDLE_CARDS = []
+            print("Info:")
+            print("-----")
 
-                CURRENT_PLAYER = PLAYER2
-                OTHER_PLAYER = PLAYER1
+            print("")
 
-            elif CURRENT_PLAYER == PLAYER2:
-                PLAYER1.cards.append(PLAYER2.cards[0])
-                PLAYER2.cards = PLAYER2.cards[1:]
+            print("\t- Current Deck: {}".format(CURRENT_DECK))
+            print("\t- Total Cards: {}".format(TOTAL_CARDS))
 
-                PLAYER1.cards.append(PLAYER1.cards[0])
-                PLAYER1.cards = PLAYER1.cards[1:]
+            print("")
 
-                PLAYER1.cards += MIDDLE_CARDS
-                MIDDLE_CARDS = []
+            print("You:")
+            print("----")
 
-                CURRENT_PLAYER = PLAYER1
-                OTHER_PLAYER = PLAYER2
+            print("\t- Cards You've Got: {} ({}%)".format(
+                len(OTHER_PLAYER.cards), round(
+                    (100.0 * OTHER_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
+                )/10
+            ))
 
-            input("\nPress <ENTER> to continue.")
+            print("\t- Cards They've Got: {} ({}%)".format(
+                len(CURRENT_PLAYER.cards), round(
+                    (100.0 * CURRENT_PLAYER_CARDS)/float(TOTAL_CARDS) * 10
+                )/10
+            ))
 
-        else:
-            print(
-                "Uh-oh... They're both the same! This means we put your cards in the middle and the next person who wins gets all the cards!"
+            print("")
+
+            print("\t- Cards in Middle: {} ({}%)".format(
+                len(MIDDLE_CARDS), round(
+                    (100.0 * len(MIDDLE_CARDS))/float(TOTAL_CARDS) * 10
+                )/10
+            ))
+
+            print("")
+
+            print("Current Card:")
+            print("-------------")
+
+            print("")
+
+            render_card(OTHER_PLAYER_CARD)
+
+            print("")
+
+            print("Out of these, remeber that {} went with '{}'.".format(
+                CURRENT_NAME, chosen_trait))
+
+            input("(Press <ENTER> when you're finished) ")
+
+            clear()
+
+            print("THE COMPARISON:")
+            input("Ok, so {} chose the trait {}. ".format(
+                CURRENT_NAME, chosen_trait))
+
+            print()
+
+            input("{}'s Card's {}: {} ".format(CURRENT_NAME, chosen_trait,
+                                               CURRENT_PLAYER_CARD.traits[chosen_trait])
+                  )
+
+            input("and...")
+
+            input("{}'s {} was... {} ".format(OTHER_NAME, chosen_trait,
+                                              OTHER_PLAYER_CARD.traits[chosen_trait]))
+
+            comparison = compare(
+                CURRENT_PLAYER.cards[0], OTHER_PLAYER.cards[0]
             )
 
-            MIDDLE_CARDS.append(CURRENT_PLAYER.cards[0])
-            MIDDLE_CARDS.append(OTHER_PLAYER.cards[0])
-
-            if CURRENT_PLAYER == PLAYER1:
-                PLAYER1.cards = PLAYER1.cards[1:]
-                PLAYER2.cards = PLAYER2.cards[1:]
-
-                PLAYER1.cards.append(PLAYER1.cards[0])
-                PLAYER1.cards = PLAYER1.cards[1:]
-
-                CURRENT_PLAYER = PLAYER1
-                OTHER_PLAYER = PLAYER2
-
-            elif CURRENT_PLAYER == PLAYER2:
-                PLAYER2.cards = PLAYER2.cards[1:]
-                PLAYER1.cards = PLAYER1.cards[1:]
-
-                PLAYER2.cards.append(PLAYER2.cards[0])
-                PLAYER2.cards = PLAYER2.cards[1:]
-
-                CURRENT_PLAYER = PLAYER2
-                OTHER_PLAYER = PLAYER1
-
             print("")
 
-            print("However, it's still {}'s turn.".format(
-                CURRENT_PLAYER.name))
+            if comparison[chosen_trait] == CURRENT_PLAYER.cards[0]:
+                print("This means that {} has won this round!".format(
+                    CURRENT_PLAYER.name))
+                print(
+                    "For {}, they've lost... :(".format(OTHER_PLAYER.name))
 
-            input("Ok, press <ENTER> for the next round! ")
+                print("")
 
-    # # ============ GAME PLAY ============
+                print("This also means that {} stays on and gets to choose the next trait again!".format(
+                    CURRENT_PLAYER.name))
 
-    # while not (len(PLAYER1.cards) <= 0 or len(PLAYER2.cards) <= 0):
-    #     clear()
-    #     print("GAMEPLAY: {}".format(CURRENT_PLAYER.name))
-    #     print("====================")
-    #     print("Middle: There are {} cards in the middle.".format(
-    #         len(MIDDLE_CARDS)))
+                if CURRENT_PLAYER == PLAYER1:
+                    PLAYER1.cards.append(PLAYER2.cards[0])
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #     print("")
+                    PLAYER1.cards.append(PLAYER1.cards[0])
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #     print("It's currently {}'s turn.".format(CURRENT_PLAYER.name))
+                    PLAYER1.cards += MIDDLE_CARDS
+                    MIDDLE_CARDS = []
 
-    #     print("")
+                    CURRENT_PLAYER = PLAYER1
+                    OTHER_PLAYER = PLAYER2
 
-    #     print("You currently have {} cards. You lose when you reach 0.".format(
-    #         len(CURRENT_PLAYER.cards)))
+                elif CURRENT_PLAYER == PLAYER2:
+                    PLAYER2.cards.append(PLAYER1.cards[0])
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #     print("")
+                    PLAYER2.cards.append(PLAYER2.cards[0])
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #     render_card(CURRENT_PLAYER.cards[0])
+                    PLAYER2.cards += MIDDLE_CARDS
+                    MIDDLE_CARDS = []
 
-    #     avaliable_traits = list(card_data["traits"].keys())
+                    CURRENT_PLAYER = PLAYER2
+                    OTHER_PLAYER = PLAYER1
 
-    #     print("")
+                input("\nPress <ENTER> to continue.")
 
-    #     print("Please select a quality to challenge them on:")
+            elif comparison[chosen_trait] == OTHER_PLAYER.cards[0]:
+                print("This means that {} won this time!".format(
+                    OTHER_PLAYER.name))
+                print("This also means {} now gets to choose the trait!".format(
+                    OTHER_PLAYER.name))
 
-    #     try:
-    #         chosen_trait = int(input(">>> ").lower())
+                print("")
 
-    #     except:
-    #         chosen_trait = float("infinity")
+                if CURRENT_PLAYER == PLAYER1:
+                    PLAYER2.cards.append(PLAYER1.cards[0])
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #     if chosen_trait not in list(range(1, len(avaliable_traits) + 1)):
-    #         print("I'm sorry, I don't understand. Try again.")
-    #         sleep(2)
+                    PLAYER2.cards.append(PLAYER2.cards[0])
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #         continue
+                    PLAYER2.cards += MIDDLE_CARDS
+                    MIDDLE_CARDS = []
 
-    #     else:
-    #         chosen_trait = list(avaliable_traits)[chosen_trait - 1]
-    #         input("Awesome. Let's see who wins. Press <ENTER> to continue. ")
+                    CURRENT_PLAYER = PLAYER2
+                    OTHER_PLAYER = PLAYER1
 
-    #         clear()
+                elif CURRENT_PLAYER == PLAYER2:
+                    PLAYER1.cards.append(PLAYER2.cards[0])
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #         print("(You can show the screen now)")
+                    PLAYER1.cards.append(PLAYER1.cards[0])
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #         print("{}, {} has chosen the trait to challenge you on.".format(
-    #             OTHER_PLAYER.name, CURRENT_PLAYER.name)
-    #         )
+                    PLAYER1.cards += MIDDLE_CARDS
+                    MIDDLE_CARDS = []
 
-    #         input("\nPlease don't let {} see, and we'll look at you card, {}. (Press <ENTER> to continue) ".format(
-    #             CURRENT_PLAYER.name, OTHER_PLAYER.name)
-    #         )
+                    CURRENT_PLAYER = PLAYER1
+                    OTHER_PLAYER = PLAYER2
 
-    #         clear()
-    #         print("GAMEPLAY: {}".format(OTHER_PLAYER.name))
-    #         print("====================")
-    #         print("Middle: There are {} cards in the middle.".format(
-    #             len(MIDDLE_CARDS)))
+                input("\nPress <ENTER> to continue.")
 
-    #         print("")
+            else:
+                print(
+                    "Uh-oh... They're both the same! This means we put your cards in the middle and the next person who wins gets all the cards!"
+                )
 
-    #         print("It's currently {}'s turn.".format(OTHER_PLAYER.name))
+                MIDDLE_CARDS.append(CURRENT_PLAYER.cards[0])
+                MIDDLE_CARDS.append(OTHER_PLAYER.cards[0])
 
-    #         print("")
+                if CURRENT_PLAYER == PLAYER1:
+                    PLAYER1.cards = PLAYER1.cards[1:]
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #         print("You currently have {} cards. You lose when you reach 0.".format(
-    #             len(OTHER_PLAYER.cards)))
+                    PLAYER1.cards.append(PLAYER1.cards[0])
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #         print("")
+                    CURRENT_PLAYER = PLAYER1
+                    OTHER_PLAYER = PLAYER2
 
-    #         render_card(OTHER_PLAYER.cards[0])
+                elif CURRENT_PLAYER == PLAYER2:
+                    PLAYER2.cards = PLAYER2.cards[1:]
+                    PLAYER1.cards = PLAYER1.cards[1:]
 
-    #         print("")
+                    PLAYER2.cards.append(PLAYER2.cards[0])
+                    PLAYER2.cards = PLAYER2.cards[1:]
 
-    #         input("When you're ready, press <ENTER> to continue. ")
+                    CURRENT_PLAYER = PLAYER2
+                    OTHER_PLAYER = PLAYER1
 
-    #         clear()
+                print("")
 
-    #         print("(You can both look now)")
-    #         print("Ok, let's see who wins...")
+                print("However, it's still {}'s turn.".format(
+                    CURRENT_PLAYER.name))
 
-    #         sleep(3)
+                input("Ok, press <ENTER> for the next round! ")
 
-    #         input("(When you press <ENTER>) ")
+        winning = PLAYER1 if len(PLAYER1.cards) > 0 else PLAYER2
 
-    #         sleep(1)
+        clear()
 
-    #         comparison = compare(
-    #             CURRENT_PLAYER.cards[0], OTHER_PLAYER.cards[0])
+        input("Well done {}, you've won the game! ".format(winning.name))
 
-    #         print("")
+        print("")
 
-    #         if comparison[chosen_trait] == CURRENT_PLAYER.cards[0]:
-    #             print("For {}, YAY! They've won! ".format(
-    #                 CURRENT_PLAYER.name))
-    #             print(
-    #                 "For {}, NAY! They've lost... :(".format(OTHER_PLAYER.name))
+        play = input("Would you like to play again? [yes, no] ").lower()
 
-    #             print("")
+        while play not in ["yes", "no", "y", "n"]:
+            print("\nIm pretty sure you made a mistake. Seriously, it's not that hard:")
+            play = input("Would you like to play again? [yes, no] ").lower()
 
-    #             print("This also means that {} stays on and gets to choose the next trait again!".format(
-    #                 CURRENT_PLAYER.name))
-
-    #             if CURRENT_PLAYER == PLAYER1:
-    #                 PLAYER1.cards.append(PLAYER2.cards[0])
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 PLAYER1.cards.append(PLAYER1.cards[0])
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER1
-    #                 OTHER_PLAYER = PLAYER2
-
-    #             elif CURRENT_PLAYER == PLAYER2:
-    #                 PLAYER2.cards.append(PLAYER1.cards[0])
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 PLAYER2.cards.append(PLAYER2.cards[0])
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER2
-    #                 OTHER_PLAYER = PLAYER1
-
-    #             input("\nPress <ENTER> to continue.")
-
-    #         elif comparison[chosen_trait] == OTHER_PLAYER.cards[0]:
-    #             print("Unfortunately, {} won this time.".format(
-    #                 OTHER_PLAYER.name))
-    #             print("This also means {} now gets to choose the trait!".format(
-    #                 OTHER_PLAYER.name))
-
-    #             print("")
-
-    #             if CURRENT_PLAYER == PLAYER1:
-    #                 PLAYER2.cards.append(PLAYER1.cards[0])
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 PLAYER2.cards.append(PLAYER2.cards[0])
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER2
-    #                 OTHER_PLAYER = PLAYER1
-
-    #             elif CURRENT_PLAYER == PLAYER2:
-    #                 PLAYER1.cards.append(PLAYER2.cards[0])
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 PLAYER1.cards.append(PLAYER1.cards[0])
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER1
-    #                 OTHER_PLAYER = PLAYER2
-
-    #             input("\nPress <ENTER> to continue.")
-
-    #         else:
-    #             print(
-    #                 "Uh-oh... They're both the same! This means we put your cards in the middle and the next person who wins gets all the cards!"
-    #             )
-
-    #             MIDDLE_CARDS.append(CURRENT_PLAYER.cards[0])
-    #             MIDDLE_CARDS.append(OTHER_PLAYER.cards[0])
-
-    #             if CURRENT_PLAYER == PLAYER1:
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 PLAYER1.cards.append(PLAYER1.cards[0])
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER1
-    #                 OTHER_PLAYER = PLAYER2
-
-    #             elif CURRENT_PLAYER == PLAYER2:
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-    #                 PLAYER1.cards = PLAYER1.cards[1:]
-
-    #                 PLAYER2.cards.append(PLAYER2.cards[0])
-    #                 PLAYER2.cards = PLAYER2.cards[1:]
-
-    #                 CURRENT_PLAYER = PLAYER2
-    #                 OTHER_PLAYER = PLAYER1
-
-    #             print("")
-
-    #             print("However, it's still {}'s turn.".format(
-    #                 CURRENT_PLAYER.name))
-
-    #             input("Ok, press <ENTER> to continue.")
-
-    # ===================================
-
-#####################
 
 ### ONE vs ONE MODE ###
 
@@ -1260,7 +1102,7 @@ def main():
     while True:
         print_logo()
 
-        print("Welcome to TopTrumps, a python script for playing a version TopTrumps.")
+        print("Welcome to TopTrumps, a python script for playing a version of TopTrumps.")
 
         print("")
 
@@ -1287,11 +1129,11 @@ def main():
 
 ### SHH, II'S STARTING ###
 
-try:
-    if __name__ == '__main__':
+if __name__ == '__main__':
+    try:
         main()
 
-except KeyboardInterrupt:
-    program_close()
+    except KeyboardInterrupt:
+        program_close()
 
 ##########################
