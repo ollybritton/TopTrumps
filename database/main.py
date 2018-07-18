@@ -5,6 +5,7 @@ import os
 CLEAR_PRINT = [True, 100]
 CASH = 1000
 
+
 def clear():
     """
     Clears the terminal window.
@@ -45,12 +46,13 @@ def hash(string):
 def get_id(username, password):
     return hash(username + password)
 
+
 def get_credentials():
     username = input("Username: ")
 
     if username == "quit":
         return "quit"
-    
+
     password = input("Password: ")
 
     if password == "quit":
@@ -75,6 +77,7 @@ def get_credentials():
 
     return username, password, user_id, filename, does_exist
 
+
 def open_screen():
     input("Hello and Welcome to BANKING SIMULATOR 1976! (Press <ENTER> to continue) ")
     print("")
@@ -97,7 +100,7 @@ def open_screen():
 
 def open_account():
     global CASH
-    
+
     print("Ok, I understand you'd like to create your account. Let's get started: \n")
 
     login_data = get_credentials()
@@ -114,7 +117,6 @@ def open_account():
 
     account_data = {
         "username": username,
-        "password": password,
         "money": 0,
     }
 
@@ -130,9 +132,10 @@ def open_account():
             except:
                 input("I'm sorry, that's not a valid amount. Please try again. ")
                 continue
-            
+
             if (CASH - deposit) < 0:
-                input("I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
+                input(
+                    "I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
                 continue
 
             CASH = CASH - deposit
@@ -167,7 +170,8 @@ def close_account():
         username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
-        print("I'm sorry, that account does not exist. Please try again later.")
+        print("I'm sorry, that account does not exist or you have entered the username or password incorrectly. Please try again later.")
+        input("Press <ENTER> to continue. ")
         return
 
     input("This is your last chance to say goodbye to your account, so when you're done, press <ENTER>. ")
@@ -193,7 +197,8 @@ def look_account():
         username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
-        print("I'm sorry, that account does not exist. Please try again later.")
+        print("I'm sorry, that account does not exist or you have entered the username or password incorrectly. Please try again later.")
+        input("Press <ENTER> to continue. ")
         return
 
     account_data = {}
@@ -213,7 +218,7 @@ def look_account():
 
 def deposit():
     global CASH
-    
+
     print("We need your credentials to deposit any money:")
 
     print("")
@@ -227,14 +232,16 @@ def deposit():
         username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
-        print("I'm sorry, that account does not exist. Please try again later.")
+        print("I'm sorry, that account does not exist or you have entered the username or password incorrectly. Please try again later.")
+        input("Press <ENTER> to continue. ")
         return
 
     is_number = False
     deposit_amount = 0
 
     while not is_number:
-        deposit_amount = input("Ok, how much would you like to deposit? You have £{} in cash. ".format(CASH))
+        deposit_amount = input(
+            "Ok, how much would you like to deposit? You have £{} in cash. ".format(CASH))
 
         try:
             deposit_amount = float(deposit_amount)
@@ -245,7 +252,8 @@ def deposit():
             is_number = False
 
         if (CASH - deposit_amount) < 0:
-            input("I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
+            input(
+                "I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
             continue
 
     CASH -= deposit
@@ -279,7 +287,8 @@ def change_info():
         username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
-        print("I'm sorry, that account does not exist. Please try again later.")
+        print("I'm sorry, that account does not exist or you have entered the username or password incorrectly. Please try again later.")
+        input("Press <ENTER> to continue. ")
         return
 
     print("")
@@ -296,7 +305,6 @@ def change_info():
     new_filename = "data/" + new_user_id + ".json"
 
     account_data["username"] = new_username
-    account_data["password"] = new_password
 
     os.remove(filename)
 
@@ -306,6 +314,7 @@ def change_info():
     print("")
 
     input("Press <ENTER> to finish. ")
+
 
 def leave():
     print("In the words of the famous song 'Hotel California'...")
@@ -320,7 +329,7 @@ def leave():
 
     else:
         checkin_query = ""
-    
+
         while not checkin_query == "y":
             checkin_query = input("Would you like to check in? ")[0].lower()
 
@@ -333,26 +342,11 @@ def leave():
                 input("(Press <ENTER> to continue)")
 
                 return
-        
-def hack_bank():
-    files = [f for f in os.path.listdir("data/") if os.isfile(os.join("data/", f))]
-
-    for f in files:
-        with open(f, "r") as hacked_file:
-            data = json.loads(hacked_file.read())
-            print("NAME: {}".format(data["username"]))
-            print("PASSWORD: {}".format(data["password"]))
-            print("")
-            print("MONEY: {}".format(data["money"]))
-
-            input("")
-            
-            print("\n")
 
 
 def main():
     global CASH
-     
+
     while True:
         clear()
         print("Hello, Customer! You have options as to what you can do today.")
@@ -373,8 +367,8 @@ def main():
 
         print("")
 
-        if user_choice not in ["1", "2", "3", "4", "5", "6", "7"]:
-            input("It was such a simple question and yet you still managed to mess it up. Type in the number that the action is associated with.")
+        if user_choice not in ["1", "2", "3", "4", "5", "6"]:
+            input("It was such a simple question and yet you still managed to mess it up. Type in the number that the action is associated with. (Press <ENTER> to continue) ")
 
         if user_choice == "1":
             open_account()
@@ -394,12 +388,9 @@ def main():
         elif user_choice == "6":
             leave()
 
-        elif user_choice == "7":
-            hack_bank()
-
 
 if __name__ == "__main__":
     clear()
 
-    #open_screen()
+    # open_screen()
     main()
