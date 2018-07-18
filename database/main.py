@@ -73,7 +73,7 @@ def open_account():
     password = input("What do you want your password to be? ")
 
     user_id = get_id(username, password)
-    filename = user_id + ".json"
+    filename = "data/" + user_id + ".json"
 
     does_exist = False
 
@@ -130,7 +130,7 @@ def close_account():
     print("")
 
     user_id = get_id(username, password)
-    filename = user_id + ".json"
+    filename = "data/" + user_id + ".json"
 
     does_exist = False
 
