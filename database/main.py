@@ -2,8 +2,8 @@ import hashlib
 import json
 import os
 
-CLEAR_PRINT = [False, 100]
-
+CLEAR_PRINT = [True, 100]
+CASH = 1000
 
 def clear():
     """
@@ -45,6 +45,35 @@ def hash(string):
 def get_id(username, password):
     return hash(username + password)
 
+def get_credentials():
+    username = input("Username: ")
+
+    if username == "quit":
+        return "quit"
+    
+    password = input("Password: ")
+
+    if password == "quit":
+        return "quit"
+
+    print("")
+
+    user_id = get_id(username, password)
+    filename = "data/" + user_id + ".json"
+
+    does_exist = False
+
+    try:
+        with open(filename, "r") as f:
+            f.read()
+
+        does_exist = True
+
+    except:
+        # Account does not exist
+        does_exist = False
+
+    return username, password, user_id, filename, does_exist
 
 def open_screen():
     input("Hello and Welcome to BANKING SIMULATOR 1976! (Press <ENTER> to continue) ")
@@ -67,30 +96,20 @@ def open_screen():
 
 
 def open_account():
+    global CASH
+    
     print("Ok, I understand you'd like to create your account. Let's get started: \n")
 
-    username = input("What would you like your username to be? ")
-    password = input("What do you want your password to be? ")
+    login_data = get_credentials()
 
-    print("")
+    if login_data == "quit":
+        return
 
-    user_id = get_id(username, password)
-    filename = "data/" + user_id + ".json"
-
-    does_exist = False
-
-    try:
-        with open(filename, "r") as f:
-            f.read()
-
-        does_exist = True
-
-    except:
-        # Account does not exist
-        does_exist = False
+    else:
+        username, password, user_id, filename, does_exist = login_data
 
     if does_exist:
-        print("I'm sorry, that account already exists. Please try again later.")
+        input("I'm sorry, that account already exists. Please try again later. ")
         return
 
     account_data = {
@@ -104,9 +123,22 @@ def open_account():
     )[0].lower()
 
     if initial_deposit == "y":
-        deposit = int(input("How much would you like to add? "))
+        while True:
+            try:
+                deposit = int(input("How much would you like to add? "))
 
-        account_data["money"] += deposit
+            except:
+                input("I'm sorry, that's not a valid amount. Please try again. ")
+                continue
+            
+            if (CASH - deposit) < 0:
+                input("I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
+                continue
+
+            CASH = CASH - deposit
+
+            account_data["money"] += deposit
+            break
 
     with open(filename, "w") as f:
         f.write(json.dumps(account_data, ensure_ascii=False))
@@ -126,25 +158,13 @@ def close_account():
 
     print("")
 
-    username = input("Username: ")
-    password = input("Password: ")
+    login_data = get_credentials()
 
-    print("")
+    if login_data == "quit":
+        return
 
-    user_id = get_id(username, password)
-    filename = "data/" + user_id + ".json"
-
-    does_exist = False
-
-    try:
-        with open(filename, "r") as f:
-            f.read()
-
-        does_exist = True
-
-    except:
-        # Account does not exist
-        does_exist = False
+    else:
+        username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
         print("I'm sorry, that account does not exist. Please try again later.")
@@ -164,25 +184,13 @@ def look_account():
 
     print("")
 
-    username = input("Username: ")
-    password = input("Password: ")
+    login_data = get_credentials()
 
-    print("")
+    if login_data == "quit":
+        return
 
-    user_id = get_id(username, password)
-    filename = "data/" + user_id + ".json"
-
-    does_exist = False
-
-    try:
-        with open(filename, "r") as f:
-            f.read()
-
-        does_exist = True
-
-    except:
-        # Account does not exist
-        does_exist = False
+    else:
+        username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
         print("I'm sorry, that account does not exist. Please try again later.")
@@ -204,29 +212,19 @@ def look_account():
 
 
 def deposit():
+    global CASH
+    
     print("We need your credentials to deposit any money:")
 
     print("")
 
-    username = input("Username: ")
-    password = input("Password: ")
+    login_data = get_credentials()
 
-    print("")
+    if login_data == "quit":
+        return
 
-    user_id = get_id(username, password)
-    filename = "data/" + user_id + ".json"
-
-    does_exist = False
-
-    try:
-        with open(filename, "r") as f:
-            f.read()
-
-        does_exist = True
-
-    except:
-        # Account does not exist
-        does_exist = False
+    else:
+        username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
         print("I'm sorry, that account does not exist. Please try again later.")
@@ -236,7 +234,7 @@ def deposit():
     deposit_amount = 0
 
     while not is_number:
-        deposit_amount = input("Ok, how mch would you like to deposit? ")
+        deposit_amount = input("Ok, how much would you like to deposit? You have £{} in cash. ".format(CASH))
 
         try:
             deposit_amount = float(deposit_amount)
@@ -245,6 +243,12 @@ def deposit():
         except:
             input("I'm sorry, that's not a valid amount. Please try again. ")
             is_number = False
+
+        if (CASH - deposit_amount) < 0:
+            input("I'm sorry, you don't have that much money. The most you can put in is £{}. ".format(CASH))
+            continue
+
+    CASH -= deposit
 
     account_data = {}
 
@@ -266,25 +270,13 @@ def change_info():
 
     print("")
 
-    username = input("Username: ")
-    password = input("Password: ")
+    login_data = get_credentials()
 
-    print("")
+    if login_data == "quit":
+        return
 
-    user_id = get_id(username, password)
-    filename = "data/" + user_id + ".json"
-
-    does_exist = False
-
-    try:
-        with open(filename, "r") as f:
-            f.read()
-
-        does_exist = True
-
-    except:
-        # Account does not exist
-        does_exist = False
+    else:
+        username, password, user_id, filename, does_exist = login_data
 
     if not does_exist:
         print("I'm sorry, that account does not exist. Please try again later.")
@@ -317,9 +309,12 @@ def change_info():
 
 
 def main():
+    global CASH
+     
     while True:
         clear()
         print("Hello, Customer! You have options as to what you can do today.")
+        print("You have £{} in cash that you can use for deposits.".format(CASH))
 
         print("")
 
@@ -357,5 +352,5 @@ def main():
 if __name__ == "__main__":
     clear()
 
-    open_screen()
+    #open_screen()
     main()
