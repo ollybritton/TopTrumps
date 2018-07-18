@@ -326,6 +326,33 @@ def clear():
         print("\n" * CLEAR_PRINT[1])
 
 
+def super_input(initial, initial_input, input_type, reprompt, reprompt_input):
+    """
+    The Super Input Function:
+    So the idea with this function is that you can create an input which is super sanitized and handles errors and stuff for you.
+    """
+
+    print(initial)
+    given_input = input(initial_input)
+
+    while True:
+        try:
+            # Try convert it into specified type.
+            print("")
+            given_input = input_type(given_input)
+
+        except:
+            # Oops, there was an error.
+            print(reprompt)
+            given_input = input(reprompt_input)
+
+            continue
+
+        break
+
+    return given_input
+
+
 def program_close():
     """
     Exits the program nicely.
@@ -432,7 +459,7 @@ def print_logo():
 
 
 def option_choice():
-    write_text(
+    print(
         "\t- [standard] => A gamemode where two players get a set of cards each, and they have to battle each other using the highest values on their cards."
     )
 
@@ -440,7 +467,7 @@ def option_choice():
 
     print("")
 
-    write_text(
+    print(
         "\t- [1v1] => A gamemode where two players get 100 points which they can spend freely on three characteristics."
     )
 
@@ -448,7 +475,7 @@ def option_choice():
 
     print("")
 
-    write_text(
+    print(
         "\t- [create] => In this section you can create your own cards to play with during standard mode."
     )
 
@@ -456,11 +483,12 @@ def option_choice():
 
     print("")
 
-    write_text(
+    print(
         "\t- [exit] => Quit the program."
     )
 
     sleep(0.7)
+
 
     print("")
 
@@ -1080,10 +1108,50 @@ def standard():
 
 
 ### ONE vs ONE MODE ###
+def onevsone_create_character(number):
+    player = {}
+    clear()
+
+    number = str(number)
+    print("PLAYER {}:".format(number))
+
+    name = super_input(
+        "First, we need to find out what your name is:",
+        "What's your name? ",
+        str,
+        "I'm sorry, something went wrong. Please try again:",
+        "What's your name? "
+    )
+
+    print("")
+
+    age = super_input(
+        "Now we need to find out how old you are:",
+        "How old are you? ",
+        float,
+        "I'm sorry, something went wrong. Please try again:",
+        "How old are you? "
+    )
+
+    print("")
+
+    return player
+
+
+def onevsone_charatcer_creation():
+    print("CHARACTER CREATION:")
+    input("First, we need to create your two characters which you will use for battle. (Press enter) ")
+
+    P1, P2 = {}, {}
+
+    P1 = onevsone_create_character(1)
+
+    return P1, P2
 
 
 def onevsone():
-    pass
+    P1, P2 = onevsone_charatcer_creation()
+
 
 #######################
 
