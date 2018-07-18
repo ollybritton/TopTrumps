@@ -307,6 +307,48 @@ def change_info():
 
     input("Press <ENTER> to finish. ")
 
+def leave():
+    print("In the words of the famous song 'Hotel California'...")
+    input("'You can check out any time you like, but you can never leave.' ")
+
+    print("")
+
+    checkout_query = input("Would you like to check out? ")[0].lower()
+
+    if checkout_query == "n":
+        return
+
+    else:
+        checkin_query = ""
+    
+        while not checkin_query == "y":
+            checkin_query = input("Would you like to check in? ")[0].lower()
+
+            if checkin_query == "n":
+                print("You can check out, but you can't leave.")
+                print("")
+
+            elif checkin_query == "y":
+                print("Wow, back so soon?\n")
+                input("(Press <ENTER> to continue)")
+
+                return
+        
+def hack_bank():
+    files = [f for f in os.path.listdir("data/") if os.isfile(os.join("data/", f))]
+
+    for f in files:
+        with open(f, "r") as hacked_file:
+            data = json.loads(hacked_file.read())
+            print("NAME: {}".format(data["username"]))
+            print("PASSWORD: {}".format(data["password"]))
+            print("")
+            print("MONEY: {}".format(data["money"]))
+
+            input("")
+            
+            print("\n")
+
 
 def main():
     global CASH
@@ -323,6 +365,7 @@ def main():
         print("\t- 3. Look at your account.")
         print("\t- 4. Deposit money into your account.")
         print("\t- 5. Change the information in your account.")
+        print("\t- 6. Leave the bank.")
 
         print("")
 
@@ -330,7 +373,7 @@ def main():
 
         print("")
 
-        if user_choice not in ["1", "2", "3", "4", "5"]:
+        if user_choice not in ["1", "2", "3", "4", "5", "6", "7"]:
             input("It was such a simple question and yet you still managed to mess it up. Type in the number that the action is associated with.")
 
         if user_choice == "1":
@@ -347,6 +390,12 @@ def main():
 
         elif user_choice == "5":
             change_info()
+
+        elif user_choice == "6":
+            leave()
+
+        elif user_choice == "7":
+            hack_bank()
 
 
 if __name__ == "__main__":
