@@ -1,1 +1,0 @@
-{"username": "Olly", "password": "123456", "money": 10}

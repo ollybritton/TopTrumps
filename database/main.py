@@ -67,10 +67,12 @@ def open_screen():
 
 
 def open_account():
-    print("Ok, I understand you'd like to create your account. Let's get started: ")
+    print("Ok, I understand you'd like to create your account. Let's get started: \n")
 
     username = input("What would you like your username to be? ")
     password = input("What do you want your password to be? ")
+
+    print("")
 
     user_id = get_id(username, password)
     filename = "data/" + user_id + ".json"
@@ -158,21 +160,165 @@ def close_account():
 
 
 def look_account():
-    pass
+    print("Ok, so you want to look into your account. We need your credentials first:")
+
+    print("")
+
+    username = input("Username: ")
+    password = input("Password: ")
+
+    print("")
+
+    user_id = get_id(username, password)
+    filename = "data/" + user_id + ".json"
+
+    does_exist = False
+
+    try:
+        with open(filename, "r") as f:
+            f.read()
+
+        does_exist = True
+
+    except:
+        # Account does not exist
+        does_exist = False
+
+    if not does_exist:
+        print("I'm sorry, that account does not exist. Please try again later.")
+        return
+
+    account_data = {}
+
+    with open(filename, "r") as f:
+        account_data = json.loads(f.read())
+
+    print("")
+
+    print("Name: {}".format(account_data["username"]))
+    print("Current Funds: £{}".format(account_data["money"]))
+
+    print("")
+
+    input("Press <ENTER> when you've finished looking.")
 
 
 def deposit():
-    pass
+    print("We need your credentials to deposit any money:")
+
+    print("")
+
+    username = input("Username: ")
+    password = input("Password: ")
+
+    print("")
+
+    user_id = get_id(username, password)
+    filename = "data/" + user_id + ".json"
+
+    does_exist = False
+
+    try:
+        with open(filename, "r") as f:
+            f.read()
+
+        does_exist = True
+
+    except:
+        # Account does not exist
+        does_exist = False
+
+    if not does_exist:
+        print("I'm sorry, that account does not exist. Please try again later.")
+        return
+
+    is_number = False
+    deposit_amount = 0
+
+    while not is_number:
+        deposit_amount = input("Ok, how mch would you like to deposit? ")
+
+        try:
+            deposit_amount = float(deposit_amount)
+            is_number = True
+
+        except:
+            input("I'm sorry, that's not a valid amount. Please try again. ")
+            is_number = False
+
+    account_data = {}
+
+    with open(filename, "r") as f:
+        account_data = json.loads(f.read())
+
+    account_data["money"] += deposit_amount
+
+    with open(filename, "w") as f:
+        f.write(json.dumps(account_data, ensure_ascii=True))
+
+    print("")
+
+    input("Press <ENTER> to finish. ")
 
 
 def change_info():
-    pass
+    print("We need your current credentials to make any changes:")
+
+    print("")
+
+    username = input("Username: ")
+    password = input("Password: ")
+
+    print("")
+
+    user_id = get_id(username, password)
+    filename = "data/" + user_id + ".json"
+
+    does_exist = False
+
+    try:
+        with open(filename, "r") as f:
+            f.read()
+
+        does_exist = True
+
+    except:
+        # Account does not exist
+        does_exist = False
+
+    if not does_exist:
+        print("I'm sorry, that account does not exist. Please try again later.")
+        return
+
+    print("")
+
+    account_data = {}
+
+    with open(filename, "r") as f:
+        account_data = json.loads(f.read())
+
+    new_username = input("What would you like your new username to be? ")
+    new_password = input("What would you like your new password to be? ")
+
+    new_user_id = get_id(new_username, new_password)
+    new_filename = "data/" + new_user_id + ".json"
+
+    account_data["username"] = new_username
+    account_data["password"] = new_password
+
+    os.remove(filename)
+
+    with open(new_filename, "w") as f:
+        f.write(json.dumps(account_data, ensure_ascii=True))
+
+    print("")
+
+    input("Press <ENTER> to finish. ")
 
 
 def main():
-    clear()
-
     while True:
+        clear()
         print("Hello, Customer! You have options as to what you can do today.")
 
         print("")
@@ -209,7 +355,7 @@ def main():
 
 
 if __name__ == "__main__":
+    clear()
+
     open_screen()
     main()
-
-\
